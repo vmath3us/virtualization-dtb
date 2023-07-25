@@ -1,0 +1,12 @@
+#!/bin/bash
+if  ! sudo podman container exists arch-virtualization ; then
+distrobox create arch-virtualization \
+--image archlinux \
+--volume pacman-cache:/var/cache/pacman/pkg \
+--volume /var/lib/libvirt:/var/lib/libvirt \
+--additional-flags "--cap-add=ALL" \
+--pre-init-hooks " if [ ! -f /etc/libvirt.provisioned ] ; then sed -i 's|#DisableDownloadTimeout|DisableDownloadTimeout|' /etc/pacman.conf ; pacman -Rdd iptables --noconfirm; pacman -Syyu systemd vim qemu-full ebtables dnsmasq virt-manager --noconfirm --needed ; touch /etc/libvirt.provisioned; fi; systemctl enable libvirtd ; systemctl unmask dbus ; systemctl enable dbus" \
+--root \
+--init
+fi
+distrobox enter arch-virtualization --root -- sudo -E virt-manager

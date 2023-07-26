@@ -9,4 +9,6 @@ distrobox create arch-virtualization \
 --root \
 --init
 fi
-distrobox enter arch-virtualization --root -- sudo -E virt-manager
+virt_manager_open='distrobox enter arch-virtualization --root -- sudo -E virt-manager'
+printf '\e[1;32m%s\e[m\n' "executando ${virt_manager_open}"
+${virt_manager_open}

@@ -13,4 +13,4 @@ distrobox create opensuse-vbox \
 fi
 vbox_open='distrobox enter opensuse-vbox --root -- /usr/local/bin/vbox-entrypoint'
 printf '\e[1;32m%s\e[m\n' "run ${vbox_open} ..."
-${vbox_open}
+${vbox_open} &

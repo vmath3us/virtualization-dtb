@@ -29,7 +29,6 @@ tarball_dir=$(mktemp -d -p /tmp)
    cd $escape_dir
    tar -cf $tarball_dir/$dummy_image_name.tar *
     sudo podman image import $tarball_dir/$dummy_image_name.tar --message tag $dummy_image_name:1
-   rm -rf $escape_dir $tarball_dir
 fi
 }
 function distrobox_invocation(){

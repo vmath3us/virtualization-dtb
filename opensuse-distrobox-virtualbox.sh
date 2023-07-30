@@ -7,7 +7,7 @@ if ! sudo podman container exists opensuse-vbox ; then
 distrobox create opensuse-vbox \
 --image registry.opensuse.org/opensuse/distrobox \
 --additional-flags "--cap-add=ALL" \
---pre-init-hooks "if [ ! -f /etc/vbox.provisioned ] ; then zypper --non-interactive in -R virtualbox virtualbox-qt virtualbox-vnc virtualbox-host-source kernel-devel kernel-default-devel ; echo -e '#!/bin/bash\\\\nsudo /usr/sbin/vboxconfig ; for i in vboxautostart-service vboxdrv ; do sudo systemctl unmask \\\$i ; sudo systemctl start \\\$i ; done ; echo 'is ok close term' ; exec VirtualBox \& ' > /usr/local/bin/vbox-entrypoint ; chmod +x /usr/local/bin/vbox-entrypoint; touch /etc/vbox.provisioned; fi" \
+--pre-init-hooks "if [ ! -f /etc/vbox.provisioned ] ; then zypper al kernel-firm\\\*; zypper --non-interactive in -R virtualbox virtualbox-qt virtualbox-vnc; echo -e '#!/bin/bash\\\\n\\\\nkernel=\\\$(uname -r)\\\\nfor i in \\\$(find /usr/lib/modules/\\\$kernel/extra); do sudo insmod \\\$i 2>/dev/null; done ; echo 'is ok close term' ; VirtualBox %U' > /usr/local/bin/vbox-entrypoint ; chmod +x /usr/local/bin/vbox-entrypoint; touch /etc/vbox.provisioned; fi" \
 --init-hooks "usermod -aG vboxusers $USER" \
 --root \
 --init

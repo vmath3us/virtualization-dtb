@@ -11,7 +11,9 @@ function overlay_create_and_mount(){
          sudo mkdir -p $operation_dir/overlay/work-$i
          sudo mkdir -p $operation_dir/overlay/upper-$i
          sudo mkdir -p $operation_dir/$i
-         sudo mount  -t overlay overlay -o lowerdir=/$i,upperdir=$operation_dir/overlay/upper-$i,workdir=$operation_dir/overlay/work-$i $operation_dir/$i
+         if ! mountpoint -q $operation_dir/$i > /dev/null; then
+            sudo mount  -t overlay overlay -o lowerdir=/$i,upperdir=$operation_dir/overlay/upper-$i,workdir=$operation_dir/overlay/work-$i $operation_dir/$i
+         fi
         done
 }
 function dummy_image_create(){

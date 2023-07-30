@@ -47,9 +47,14 @@ printf "###########################################################\n"
 printf "                Distrobox Delta                               \n"
 printf "###########################################################\n"
 function main(){
+if ! sudo podman container exists $box_name ; then
     overlay_create_and_mount
     dummy_image_create
     distrobox_invocation
+    distrobox enter --root $box_name
+else
+    distrobox enter --root $box_name
+fi
 }
 if [ ! -z $box_name ] ; then
 main

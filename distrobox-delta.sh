@@ -50,9 +50,10 @@ if ! sudo podman container exists $box_name ; then
     overlay_create_and_mount
     dummy_image_create
     distrobox_invocation
-    distrobox enter --root $box_name
+    distrobox enter --root $box_name -- /usr/local/bin/vbox-entrypoint &
 else
-    distrobox enter --root $box_name
+    overlay_create_and_mount
+    distrobox enter --root $box_name -- /usr/local/bin/vbox-entrypoint &
 fi
 }
 if [ ! -z $1 ] ; then

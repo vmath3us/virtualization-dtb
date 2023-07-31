@@ -2,7 +2,6 @@
 list_dirs=("bin" "boot" "etc" "lib" "lib64" "opt" "root" "sbin" "srv" "usr" "var")
 system_dirs=("proc" "sys" "dev" "run" "tmp")
 dtb_delta="/var/lib/distrobox-delta"  #### need real file system, not overlayfs
-box_name="opensuse-vbox-delta"
 dummy_image_name="dummy-image-distrobox"
 function overlay_create_and_mount(){
     operation_dir="$dtb_delta/$box_name"
@@ -56,6 +55,10 @@ else
     distrobox enter --root $box_name
 fi
 }
-if [ ! -z $box_name ] ; then
-main
+if [ ! -z $1 ] ; then
+    box_name=$1
+    main
+else
+    box_name="opensuse-vbox-delta"
+    main
 fi

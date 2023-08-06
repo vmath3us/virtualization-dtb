@@ -5,10 +5,10 @@ distrobox create arch-virtualization \
 --volume pacman-cache:/var/cache/pacman/pkg \
 --volume /var/lib/libvirt:/var/lib/libvirt \
 --additional-flags "--cap-add=ALL" \
---pre-init-hooks " if [ ! -f /etc/libvirt.provisioned ] ; then sed -i 's|#DisableDownloadTimeout|DisableDownloadTimeout|' /etc/pacman.conf ; pacman -Rdd iptables --noconfirm; pacman -Syyu systemd vim qemu-full ebtables dnsmasq virt-manager --noconfirm --needed ; touch /etc/libvirt.provisioned; fi; systemctl enable libvirtd ; systemctl unmask dbus ; systemctl enable dbus" \
+--pre-init-hooks " if [ ! -f /etc/libvirt.provisioned ] ; then sed -i 's|#DisableDownloadTimeout|DisableDownloadTimeout|' /etc/pacman.conf ; pacman -Rdd iptables --noconfirm; pacman -Syyu systemd vim qemu-full ebtables dnsmasq virt-manager bridge-utils neovim htop --noconfirm --needed ; echo -e '#!/bin/bash\\\\nfor i in dbus libvirtd ; do sudo systemctl unmask \\\$i 2>/dev/null; sudo systemctl start \\\$i 2>/dev/null; done ; sudo -E virt-manager' > /usr/local/bin/virtmanager-entrypoint ; chmod +x /usr/local/bin/virtmanager-entrypoint ; touch /etc/libvirt.provisioned; fi" \
 --root \
 --init
 fi
-virt_manager_open='distrobox enter arch-virtualization --root -- sudo -E virt-manager'
+virt_manager_open='distrobox enter arch-virtualization --root -- /usr/local/bin/virtmanager-entrypoint'
 printf '\e[1;32m%s\e[m\n' "executando ${virt_manager_open}"
 ${virt_manager_open}

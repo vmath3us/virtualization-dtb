@@ -37,7 +37,7 @@ function distrobox_invocation(){
     distrobox create \
     $box_name \
     --root \
-    --pre-init-hooks "if [ ! -f /etc/vbox.provisioned ] ; then zypper al kernel-firm\\\*; zypper --non-interactive in -R virtualbox virtualbox-qt virtualbox-vnc; echo -e '#!/bin/bash\\\\nset -x\\\\nkernel=\\\$(uname -r)\\\\nfor i in \\\$(find /usr/lib/modules/\\\$kernel/extra); do sudo insmod \\\$i 2>/dev/null; done ; echo 'is ok close term' ; VirtualBox %U \\&' > /usr/local/bin/vbox-entrypoint ; chmod +x /usr/local/bin/vbox-entrypoint; touch /etc/vbox.provisioned; fi" \
+    --pre-init-hooks "if [ ! -f /etc/vbox.provisioned ] ; then zypper al kernel-firm\\\*; zypper --non-interactive in -R virtualbox virtualbox-qt virtualbox-vnc; echo -e '#!/bin/bash\\\\n\\\\nkernel=\\\$(uname -r)\\\\nfor i in \\\$(find /usr/lib/modules/\\\$kernel/extra); do sudo insmod \\\$i 2>/dev/null; done ; echo 'press enter to detach' ; VirtualBox %U \\&' > /usr/local/bin/vbox-entrypoint ; chmod +x /usr/local/bin/vbox-entrypoint; touch /etc/vbox.provisioned; fi" \
     --init-hooks "usermod -aG vboxusers $USER" \
     --image localhost/$dummy_image_name:1 \
     --additional-flags "--cap-add=ALL" \
